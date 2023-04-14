@@ -41,7 +41,7 @@ void SysTick_delay_us(u32 u32delay_us)
                 tcnt += reload - tnow + told;
             }
             told = tnow;
-            if(tcnt > ticks) break;
+            if(tcnt >= ticks) break;
         }
     }
 }

@@ -10,6 +10,7 @@
 int main()
 {
     Clock_Init();
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
     SysTick_Init(72);
 	Led_Init();
 	//PHASE_PWM_Init(3600-1,0);
