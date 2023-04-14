@@ -16,6 +16,7 @@
 *.dbgconf
 *.bat
 *.ini
+*.bak
 
 # Object files
 *.o
