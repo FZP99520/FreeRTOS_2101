@@ -7,6 +7,7 @@
 *.lst
 *.feng
 *.htm
+*.html
 *.uvoptx
 *.uvprojx
 *.FengZipeng
@@ -38,6 +39,12 @@
 *.a
 *.la
 *.lo
+*._2i
+*.axf
+*.fed
+*.l2p
+*.iex
+*.txt
 
 # Shared objects (inc. Windows DLLs)
 *.dll
