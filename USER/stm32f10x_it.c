@@ -23,7 +23,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-
+#include "FreeRTOS.h"
+#include "task.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -163,6 +164,10 @@ void DebugMon_Handler(void)
   */
 void SysTick_Handler(void)
 {
+    if(xTaskGetSchedulerState()!=taskSCHEDULER_NOT_STARTED)
+    {
+        xPortSysTickHandler();
+    }
 }
 
 /******************************************************************************/
