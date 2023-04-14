@@ -1,15 +1,16 @@
 #include "stm32f10x.h"
 #include "led.h"
+#include "clock.h"
 #include "systick.h"
 #include "usart.h"
 #include "printf.h"
 #include "pwm.h"
+
+
 int main()
 {
-	u8 a;
-	PWM_TypeDef pp;
-	SystemInit();
-	Delay_ms(100);
+    Clock_Init();
+    SysTick_Init(72);
 	Led_Init();
 	//PHASE_PWM_Init(3600-1,0);
 	//TIM1_Int_Init(1200-1,0);
@@ -21,9 +22,9 @@ int main()
 	{
         //GPIO_ResetBits(GPIOB,GPIO_Pin_All);
         LED_BLUE_ON;
-        Delay_ms(500);
+        SysTick_delay_ms(1000);
         LED_BLUE_OFF;
         //GPIO_SetBits(GPIOB,GPIO_Pin_All);
-        Delay_ms(500);
+        SysTick_delay_ms(1000);
 	}
 }
