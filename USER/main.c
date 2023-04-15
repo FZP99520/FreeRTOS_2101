@@ -34,7 +34,7 @@ int main()
         (UBaseType_t)START_TASK_PRIO,
         (TaskHandle_t *)StartTask_Handler);
     vTaskStartScheduler();
-    while(1)
+    /*while(1)
 	{
         //GPIO_ResetBits(GPIOB,GPIO_Pin_All);
         LED_BLUE_ON;
@@ -42,7 +42,7 @@ int main()
         LED_BLUE_OFF;
         //GPIO_SetBits(GPIOB,GPIO_Pin_All);
         SysTick_delay_ms(1000);
-	}
+	}*/
 }
 
 
@@ -56,6 +56,7 @@ void start_task(void * pvParameters)
         (UBaseType_t)LED_TASK_PRIO,
         (TaskHandle_t *)LedTask_Handler);
     vTaskDelete(StartTask_Handler);
+    taskEXIT_CRITICAL();
 }
 
 void Led_task(void * pvParameters)
@@ -63,9 +64,9 @@ void Led_task(void * pvParameters)
     while(1)
     {
         LED_BLUE_ON;
-        SysTick_os_delay_ms(500);
+        SysTick_os_delay_ms(200);
         LED_BLUE_OFF;
-        SysTick_os_delay_ms(500);
+        SysTick_os_delay_ms(800);
     }
 }
 
