@@ -6,20 +6,35 @@
 #include "printf.h"
 #include "pwm.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
+#define START_TASK_PRIO  1
+#define START_STK_SIZE   128
+TaskHandle_t StartTask_Handler;
+void start_task(void *pvParameters);
+
+#define LED_TASK_PRIO 2
+#define LED_STK_SIZE  50
+TaskHandle_t LedTask_Handler;
+void Led_task(void *pvParameters);
+
 
 int main()
 {
     Clock_Init();
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
     SysTick_Init(72);
-	Led_Init();
-	//PHASE_PWM_Init(3600-1,0);
-	//TIM1_Int_Init(1200-1,0);
-	//pp.pwm1=800;
-	//pp.pwm2=800;
-	//pp.pwm3=800;
-	//PWM_Set(pp);
-	while(1)
+    Led_Init();
+
+    xTaskCreate((TaskFunction_t)start_task,
+        (const char *)"start_task",
+        (uint16_t)START_STK_SIZE,
+        NULL,
+        (UBaseType_t)START_TASK_PRIO,
+        (TaskHandle_t *)StartTask_Handler);
+    vTaskStartScheduler();
+    while(1)
 	{
         //GPIO_ResetBits(GPIOB,GPIO_Pin_All);
         LED_BLUE_ON;
@@ -29,3 +44,29 @@ int main()
         SysTick_delay_ms(1000);
 	}
 }
+
+
+void start_task(void * pvParameters)
+{
+    taskENTER_CRITICAL();
+    xTaskCreate((TaskFunction_t)Led_task,
+        (const char *)"led_task",
+        (uint16_t)LED_STK_SIZE,
+        NULL,
+        (UBaseType_t)LED_TASK_PRIO,
+        (TaskHandle_t *)LedTask_Handler);
+    vTaskDelete(StartTask_Handler);
+}
+
+void Led_task(void * pvParameters)
+{
+    while(1)
+    {
+        LED_BLUE_ON;
+        SysTick_os_delay_ms(500);
+        LED_BLUE_OFF;
+        SysTick_os_delay_ms(500);
+    }
+}
+
+
